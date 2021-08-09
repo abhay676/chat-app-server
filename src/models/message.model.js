@@ -16,11 +16,4 @@ messageSchema.pre('save', async function (next) {
   next();
 });
 
-messageSchema.methods.toJSON = function () {
-  const msg = this;
-  const msgObject = msg.toObject();
-  delete msgObject._id;
-  return msgObject;
-};
-
 export const Message = mongoose.model('messages', messageSchema);

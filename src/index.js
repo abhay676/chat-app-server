@@ -46,6 +46,22 @@ import authContext from './utils/JWTmiddleware.js';
     })
     .catch((err) => console.log(err));
 
+  app.use((err, req, res, next) => {
+    let errors = [],
+      errObj = {};
+    err.statusCode = err.statusCode || 500;
+    const origin = req.originalUrl;
+    errObj.message = err.message;
+    errObj.value = err.value;
+    errObj.location = err.location || 'APP_INTERNAL';
+    errObj.origin = origin;
+    errors.push(errObj);
+    res.status(err.statusCode).json({
+      status: false,
+      errors,
+    });
+  });
+
   const PORT = 4000;
   httpServer.listen(PORT, () =>
     console.log(`Server is now running on http://localhost:${PORT}/graphql`)

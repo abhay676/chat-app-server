@@ -46,7 +46,7 @@ const messageResolver = {
         if (content.trim() === '') {
           throw new Error('Message is empty');
         }
-        const msgId = uniqueID();
+        const msgId = await uniqueID();
         const msgObj = {
           messageId: msgId,
           from: user.username,
@@ -54,7 +54,6 @@ const messageResolver = {
           message: content,
         };
         const message = await Message.create(msgObj);
-
         pubsub.publish('NEW_MESSAGE', { newMessage: message });
 
         return message;
